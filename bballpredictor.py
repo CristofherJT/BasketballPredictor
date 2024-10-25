@@ -19,7 +19,7 @@ def get_player_data(player_id, seasons):
         game_logs = playergamelog.PlayerGameLog(player_id = player_id, season = season)
         game_data_df = game_logs.get_data_frames()[0]
         #Drops unnecessary data
-        game_data_df.drop(['Player_ID','GAME_DATE','Game_ID','VIDEO_AVAILABLE'], axis = 1, inplace=True)
+        game_data_df.drop(['Player_ID','Game_ID','GAME_DATE','VIDEO_AVAILABLE'], axis = 1, inplace=True)
         all_data.append(game_data_df)
 
     combine_data = pd.concat(all_data, ignore_index = True)
@@ -32,6 +32,6 @@ playerIn = input('Name a current NBA player: ')
 
 player = [player for player in player_list if player['full_name'] == playerIn][0]
 playerID = player['id']
-seasons = ['2021-22', '2022-23', '2023-24']
+seasons = ['2021-22', '2022-23', '2023-24', '2024-25']
 
 print(get_player_data(playerID, seasons))
