@@ -1,7 +1,5 @@
 #Data manipulation library
 import pandas as pd
-#Lets us create and work with arrays of data
-import numpy as np
 
 #Will download nba_api to device
 import os
