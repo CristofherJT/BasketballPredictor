@@ -27,7 +27,7 @@ def get_team_defensive_data(seasons):
     team_defense_data = []
 
     for season in seasons:
-        defense_logs = leaguedashteamstats.LeagueDashTeamStats(team_id = team_id, season = season, measure_type_detailed_defense = 'Defense').get_data_frames()[0]
+        defense_logs = leaguedashteamstats.LeagueDashTeamStats(season = season, measure_type_detailed_defense = 'Defense').get_data_frames()[0]
         team_defense_data.append(defense_logs)
 
     combined_defense_data = pd.concat(team_defense_data, ignore_index = True)
@@ -41,11 +41,9 @@ player_list = players.get_active_players()
 playerIn = input('Name a current NBA player by their full name: ')
 teamIn = input('What team is the player playing against?: ')
 
-#Will look through active roster in search of the input
-player = [player for player in player_list if player['full_name'] == playerIn][0]
+#Will search for players by their full name
+player = players.find_players_by_full_name(playerIn)[0]
 playerID = player['id']
 
-team = teams.find_teams_by_full_name('teamIn')
-print(team)
-
-print(get_team_defensive_data(seasons))
+team = teams.find_teams_by_full_name(teamIn)[0]
+teamID = team['id']
