@@ -34,7 +34,6 @@ def get_team_defensive_data(seasons):
 
     return combined_defense_data
 
-
 seasons = ['2021-22', '2022-23', '2023-24', '2024-25']
 player_list = players.get_active_players()
 
@@ -45,5 +44,12 @@ teamIn = input('What team is the player playing against?: ')
 player = players.find_players_by_full_name(playerIn)[0]
 playerID = player['id']
 
+#Will search for teams by the full name
 team = teams.find_teams_by_full_name(teamIn)[0]
 teamID = team['id']
+
+#Calls the function for the defensive data of all teams
+combined_defense_data = get_team_defensive_data(seasons)
+
+#Filters for the specific team's defensive data
+team_defensive_stats = combined_defense_data[combined_defense_data['TEAM_ID'] == teamID]
