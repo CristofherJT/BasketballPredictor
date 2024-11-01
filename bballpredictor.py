@@ -5,7 +5,7 @@ import pandas as pd
 import os
 #os.system(f"{os.sys.executable} -m pip install nba_api")
 
-from nba_api.stats.endpoints import playergamelog, leaguedashteamstats, teamdashptshots
+from nba_api.stats.endpoints import playergamelog, leaguedashteamstats, defensehub
 from nba_api.stats.static import players, teams
 
 
@@ -34,11 +34,22 @@ def get_team_defensive_data(seasons):
 
     return combined_defense_data
 
+#def get_shot_defense_data(seasons):
+    shot_defense_data = []
+
+    for season in seasons:
+        shot_defense_logs = defensehub.DefenseHub(season = season, player_or_team = 'Team').get_data_frames()[0]
+        shot_defense_data.append(shot_defense_logs)
+
+    combined_shot_data = pd.concat(shot_defense_data, ignore_index = True)
+
+    return combined_shot_data
+
 seasons = ['2021-22', '2022-23', '2023-24', '2024-25']
 player_list = players.get_active_players()
 
 playerIn = input('Name a current NBA player by their full name: ')
-teamIn = input('What team is the player playing against?: ')
+teamIn = input('What team is the player playing against: ')
 
 #Will search for players by their full name
 player = players.find_players_by_full_name(playerIn)[0]
@@ -53,3 +64,4 @@ combined_defense_data = get_team_defensive_data(seasons)
 
 #Filters for the specific team's defensive data
 team_defensive_stats = combined_defense_data[combined_defense_data['TEAM_ID'] == teamID]
+
