@@ -19,10 +19,12 @@ def get_player_data(player_id, seasons):
         game_logs.drop(['Player_ID','Game_ID','GAME_DATE','VIDEO_AVAILABLE'], axis = 1, inplace=True)
         all_data.append(game_logs)
 
+    #Combines the data into one dataframe
     combine_data = pd.concat(all_data, ignore_index = True)
 
     return combine_data
 
+#Function will get team defense stats
 def get_team_defensive_data(seasons):
     team_defense_data = []
 
@@ -30,6 +32,7 @@ def get_team_defensive_data(seasons):
         defense_logs = leaguedashteamstats.LeagueDashTeamStats(season = season, measure_type_detailed_defense = 'Defense').get_data_frames()[0]
         team_defense_data.append(defense_logs)
 
+    #Combines the data into one dataframe
     combined_defense_data = pd.concat(team_defense_data, ignore_index = True)
 
     return combined_defense_data
