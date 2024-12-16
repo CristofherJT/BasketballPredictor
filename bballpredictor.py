@@ -52,14 +52,11 @@ playerID = player['id']
 team = teams.find_teams_by_full_name(teamIn)[0]
 teamID = team['id']
 
-
 #Call the functions to get the data
-player_data = get_player_data(seasons)
+player_data = get_player_data(playerID, seasons)
 combined_defense_data = get_team_defensive_data(seasons)
 
-#Filters for the specific input data
-player_stats = player_data[player_data['PLAYER_ID'] == playerID]
+#Filters for the specific team data
 team_defensive_stats = combined_defense_data[combined_defense_data['TEAM_ID'] == teamID]
-
 
 
