@@ -37,16 +37,6 @@ def get_team_defensive_data(seasons):
 
     return combined_defense_data
 
-'''def get_shot_defense_data(seasons):
-    shot_defense_data = []
-
-    for season in seasons:
-        shot_defense_logs = 
-        shot_defense_data.append(shot_defense_logs)
-
-    combined_shot_data = pd.concat(shot_defense_data, ignore_index = True)
-
-    return combined_shot_data'''
 
 seasons = ['2021-22', '2022-23', '2023-24', '2024-25']
 player_list = players.get_active_players()
