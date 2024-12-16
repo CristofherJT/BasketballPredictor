@@ -1,13 +1,15 @@
 #Data manipulation library
 import pandas as pd
 
-#Will download nba_api to device
+#Will download needed libraries
 import os
 #os.system(f"{os.sys.executable} -m pip install nba_api")
+#os.system(f"{os.sys.executable} -m pip install scikit-learn")
 
 from nba_api.stats.endpoints import playergamelog, leaguedashteamstats
 from nba_api.stats.static import players, teams
-
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
 
 #Function will get player data over multiple seasons
 def get_player_data(player_id, seasons):
@@ -59,4 +61,12 @@ combined_defense_data = get_team_defensive_data(seasons)
 #Filters for the specific team data
 team_defensive_stats = combined_defense_data[combined_defense_data['TEAM_ID'] == teamID]
 
+#Merged all relevant data for the model
+all_data = player_data.merge(team_defensive_stats)
 
+#Assigned X and y to the appropriate data sets
+X = all_data
+y = player_data['PTS']
+
+#Trains the model
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
