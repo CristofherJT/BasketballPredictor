@@ -18,7 +18,7 @@ def get_player_data(player_id, seasons):
     for season in seasons:
         game_logs = playergamelog.PlayerGameLog(player_id = player_id, season = season).get_data_frames()[0]
         #Drops unnecessary data
-        game_logs.drop(['Player_ID','Game_ID','GAME_DATE','VIDEO_AVAILABLE'], axis = 1, inplace=True)
+        game_logs.drop(['Player_ID','Game_ID','GAME_DATE','MATCHUP','WL','VIDEO_AVAILABLE'], axis = 1, inplace=True)
         all_data.append(game_logs)
 
     #Combines the data into one dataframe
@@ -54,19 +54,26 @@ playerID = player['id']
 team = teams.find_teams_by_full_name(teamIn)[0]
 teamID = team['id']
 
-#Call the functions to get the data
+#Calls the functions to get the data
 player_data = get_player_data(playerID, seasons)
 combined_defense_data = get_team_defensive_data(seasons)
 
 #Filters for the specific team data
 team_defensive_stats = combined_defense_data[combined_defense_data['TEAM_ID'] == teamID]
 
-#Merged all relevant data for the model
+
+#Merges all relevant data for the model
 all_data = player_data.merge(team_defensive_stats)
 
-#Assigned X and y to the appropriate data sets
-X = all_data
+#Assigns X and y to the appropriate data sets
+X = player_data
 y = player_data['PTS']
 
 #Trains the model
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+point_prediction = model.predict(X_test)
+
+print(f"I predict that {playerIn} will score {point_prediction[0]:.0f} points against the {teamIn} tonight.")
