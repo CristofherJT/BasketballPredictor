@@ -8,7 +8,8 @@ import os
 
 from nba_api.stats.endpoints import playergamelog, leaguedashteamstats
 from nba_api.stats.static import players, teams
-from sklearn.linear_model import LinearRegression
+#from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 
 #Function will get player data over multiple seasons
@@ -27,11 +28,12 @@ def get_player_data(player_id, seasons):
     return combine_data
 
 #Function will get team defense stats
-def get_team_defensive_data(seasons):
+def get_team_data(seasons):
     team_defense_data = []
 
     for season in seasons:
         defense_logs = leaguedashteamstats.LeagueDashTeamStats(season = season, measure_type_detailed_defense = 'Defense').get_data_frames()[0]
+        defense_logs.drop(['TEAM_NAME','GP','W','L','W_PCT'], axis = 1, inplace=True)
         team_defense_data.append(defense_logs)
 
     #Combines the data into one dataframe
@@ -56,7 +58,7 @@ teamID = team['id']
 
 #Calls the functions to get the data
 player_data = get_player_data(playerID, seasons)
-combined_defense_data = get_team_defensive_data(seasons)
+combined_defense_data = get_team_data(seasons)
 
 #Filters for the specific team data
 team_defensive_stats = combined_defense_data[combined_defense_data['TEAM_ID'] == teamID]
@@ -72,7 +74,8 @@ y = player_data['PTS']
 #Trains the model
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-model = LinearRegression()
+#model = LinearRegression()
+model = RandomForestRegressor(n_estimators=100, random_state=42)    
 model.fit(X_train, y_train)
 point_prediction = model.predict(X_test)
 
