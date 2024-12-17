@@ -1,10 +1,11 @@
-#Data manipulation library
-import pandas as pd
-
-#Will download needed libraries
 import os
+#Will download needed libraries
 #os.system(f"{os.sys.executable} -m pip install nba_api")
 #os.system(f"{os.sys.executable} -m pip install scikit-learn")
+#os.system(f"{os.sys.executable} -m pip install pandas")
+
+#Data manipulation library
+import pandas as pd
 
 from nba_api.stats.endpoints import playergamelog, leaguedashteamstats
 from nba_api.stats.static import players, teams
@@ -62,7 +63,6 @@ combined_defense_data = get_team_data(seasons)
 
 #Filters for the specific team data
 team_defensive_stats = combined_defense_data[combined_defense_data['TEAM_ID'] == teamID]
-
 
 #Merges all relevant data for the model
 all_data = player_data.merge(team_defensive_stats)
