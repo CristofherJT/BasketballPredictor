@@ -19,7 +19,6 @@ def get_player_data(player_id, seasons):
 
     for season in seasons:
         game_logs = playergamelog.PlayerGameLog(player_id = player_id, season = season).get_data_frames()[0]
-        #Drops unnecessary data
         all_data.append(game_logs)
 
     #Combines the data into one dataframe
@@ -68,7 +67,7 @@ combined_defense_data = get_team_data(seasons)
 features = ['MIN','FGM','FGA','FG_PCT','FG3M','FG3A','FG3_PCT','FTM','FTA','FT_PCT']
 
 #Assigns X and y to the appropriate data sets
-X = player_data['features']
+X = player_data[features]
 y = player_data['PTS']
 
 #Trains the model
