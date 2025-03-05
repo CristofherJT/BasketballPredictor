@@ -9,7 +9,6 @@ import pandas as pd
 
 from nba_api.stats.endpoints import playergamelog, leaguedashteamstats
 from nba_api.stats.static import players, teams
-#from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 
@@ -73,7 +72,6 @@ y = player_data['PTS']
 #Trains the model
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-#model = LinearRegression()
 model = RandomForestRegressor(n_estimators=100, random_state=42)    
 model.fit(X_train, y_train)
 point_prediction = model.predict(X_test)
