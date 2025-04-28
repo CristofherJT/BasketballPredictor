@@ -44,7 +44,7 @@ def get_team_data(seasons):
 
 
 seasons = ['2021-22', '2022-23', '2023-24', '2024-25']
-go = True
+inUse = True
 
 while go:
     playerIn = input('Name a current NBA player by their full name: ')
@@ -75,9 +75,9 @@ while go:
     y = player_data['PTS']
 
     #Trains the model
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=42)
 
-    model = RandomForestRegressor(n_estimators=100, random_state=42)    
+    model = RandomForestRegressor(n_estimators=35, random_state=42)    
     model.fit(X_train, y_train)
     point_prediction = model.predict(X_test)
 
@@ -86,5 +86,5 @@ while go:
     userCho = input('Would you like to predict another player? (y/n): ')
 
     if userCho.lower() == 'n':
-        go = False
+        inUse = False
         print('Thanks for using the program!')
