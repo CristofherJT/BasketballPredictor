@@ -18,7 +18,10 @@ def get_player_data(player_id, seasons):
 
     for season in seasons:
         game_logs = playergamelog.PlayerGameLog(player_id = player_id, season = season).get_data_frames()[0]
-        all_data.append(game_logs)
+        #Will filter for the specific team
+        filtered_logs = game_logs[game_logs['MATCHUP'].str.contains(teamABR, case=False)].copy()
+
+        all_data.append(filtered_logs)
 
     #Combines the data into one dataframe
     combine_data = pd.concat(all_data, ignore_index = True)
@@ -53,6 +56,7 @@ playerID = player['id']
 #Will search for teams by the full name
 team = teams.find_teams_by_full_name(teamIn)[0]
 teamID = team['id']
+teamABR = team['abbreviation']
 
 #Calls the functions to get the data
 player_data = get_player_data(playerID, seasons)
