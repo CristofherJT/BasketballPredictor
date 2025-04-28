@@ -44,40 +44,47 @@ def get_team_data(seasons):
 
 
 seasons = ['2021-22', '2022-23', '2023-24', '2024-25']
-player_list = players.get_active_players()
+go = True
 
-playerIn = input('Name a current NBA player by their full name: ')
-teamIn = input('What team is the player playing against: ')
+while go:
+    playerIn = input('Name a current NBA player by their full name: ')
+    teamIn = input('What team is the player playing against: ')
 
-#Will search for players by their full name
-player = players.find_players_by_full_name(playerIn)[0]
-playerID = player['id']
+    #Will search for players by their full name
+    player = players.find_players_by_full_name(playerIn)[0]
+    playerID = player['id']
 
-#Will search for teams by the full name
-team = teams.find_teams_by_full_name(teamIn)[0]
-teamID = team['id']
-teamABR = team['abbreviation']
+    #Will search for teams by the full name
+    team = teams.find_teams_by_full_name(teamIn)[0]
+    teamID = team['id']
+    teamABR = team['abbreviation']
 
-#Calls the functions to get the data
-player_data = get_player_data(playerID, seasons)
-combined_defense_data = get_team_data(seasons)
+    #Calls the functions to get the data
+    player_data = get_player_data(playerID, seasons)
+    combined_defense_data = get_team_data(seasons)
 
-#Filters for the specific team data
-#team_defensive_stats = combined_defense_data[combined_defense_data['TEAM_ID'] == teamID]
-#Merges all relevant data for the model
-#all_data = player_data.merge(team_defensive_stats)
+    #Filters for the specific team data
+    #team_defensive_stats = combined_defense_data[combined_defense_data['TEAM_ID'] == teamID]
+    #Merges all relevant data for the model
+    #all_data = player_data.merge(team_defensive_stats)
 
-features = ['MIN','FGM','FGA','FG_PCT','FG3M','FG3A','FG3_PCT','FTM','FTA','FT_PCT']
+    features = ['MIN','FGM','FGA','FG_PCT','FG3M','FG3A','FG3_PCT','FTM','FTA','FT_PCT']
 
-#Assigns X and y to the appropriate data sets
-X = player_data[features]
-y = player_data['PTS']
+    #Assigns X and y to the appropriate data sets
+    X = player_data[features]
+    y = player_data['PTS']
 
-#Trains the model
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    #Trains the model
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-model = RandomForestRegressor(n_estimators=100, random_state=42)    
-model.fit(X_train, y_train)
-point_prediction = model.predict(X_test)
+    model = RandomForestRegressor(n_estimators=100, random_state=42)    
+    model.fit(X_train, y_train)
+    point_prediction = model.predict(X_test)
 
-print(f"I predict that {playerIn} will score {point_prediction[0]:.0f} points against the {teamIn} tonight.")
+    print(f"I predict that {playerIn} will score {point_prediction[0]:.0f} points against the {teamIn} tonight.")
+    
+    userCho = input('Would you like to predict another player? (y/n): ')
+
+    if userCho.lower() == 'n':
+        go = False
+        print('Thanks for using the program!')
