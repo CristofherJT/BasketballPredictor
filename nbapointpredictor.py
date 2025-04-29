@@ -28,25 +28,10 @@ def get_player_data(player_id, seasons):
 
     return combine_data
 
-#Function will get team defense stats
-def get_team_data(seasons):
-    team_defense_data = []
-
-    for season in seasons:
-        defense_logs = leaguedashteamstats.LeagueDashTeamStats(season = season, measure_type_detailed_defense = 'Defense').get_data_frames()[0]
-        defense_logs.drop(['TEAM_NAME','GP','W','L','W_PCT'], axis = 1, inplace=True)
-        team_defense_data.append(defense_logs)
-
-    #Combines the data into one dataframe
-    combined_defense_data = pd.concat(team_defense_data, ignore_index = True)
-
-    return combined_defense_data
-
-
 seasons = ['2021-22', '2022-23', '2023-24', '2024-25']
 inUse = True
 
-while go:
+while inUse:
     playerIn = input('Name a current NBA player by their full name: ')
     teamIn = input('What team is the player playing against: ')
 
@@ -61,12 +46,6 @@ while go:
 
     #Calls the functions to get the data
     player_data = get_player_data(playerID, seasons)
-    combined_defense_data = get_team_data(seasons)
-
-    #Filters for the specific team data
-    #team_defensive_stats = combined_defense_data[combined_defense_data['TEAM_ID'] == teamID]
-    #Merges all relevant data for the model
-    #all_data = player_data.merge(team_defensive_stats)
 
     features = ['MIN','FGM','FGA','FG_PCT','FG3M','FG3A','FG3_PCT','FTM','FTA','FT_PCT']
 
