@@ -1,8 +1,26 @@
 import os
-#Will download needed libraries
-#os.system(f"{os.sys.executable} -m pip install nba_api")
-#os.system(f"{os.sys.executable} -m pip install scikit-learn")
-#os.system(f"{os.sys.executable} -m pip install pandas")
+import subprocess
+
+def install(package):
+    try:
+        subprocess.check_call([os.sys.executable, "-m", "pip", "install", package])
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to install {package}. Error: {e}")
+
+try:
+    import nba_api
+except ImportError:
+    install("nba_api")
+
+try:
+    import pandas
+except ImportError:
+    install("pandas")
+
+try:
+    import sklearn
+except ImportError:
+    install("scikit-learn")
 
 #Data manipulation library
 import pandas as pd
